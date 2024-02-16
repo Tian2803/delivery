@@ -2,6 +2,9 @@ import 'package:delivery/components/SearchWidget.dart';
 import 'package:delivery/components/drawer/custom_drawer_customer.dart';
 import 'package:delivery/components/items/category_item.dart';
 import 'package:delivery/components/items/data.dart';
+import 'package:delivery/components/items/popular_item.dart';
+import 'package:delivery/controller/product_controller.dart';
+import 'package:delivery/model/product.dart';
 import 'package:delivery/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -80,7 +83,7 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
           const SizedBox(
             height: 5,
           ),
-          //_buildPopulars(),
+          _buildPopulars(),
           const SizedBox(
             height: 20,
           ),
@@ -142,6 +145,34 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
           )
         ],
       ),
+    );
+  }
+
+  _buildPopulars() {
+    return FutureBuilder<List<Product>>(
+      future: ProductController()
+          .getProductsDetails(), // Asumiendo que hay un método específico para obtener productos populares
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else {
+          List<Product> popularProducts = snapshot.data!;
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.only(left: 15),
+            child: Row(
+              children: List.generate(
+                popularProducts.length,
+                (index) => PopularItem(
+                  product: popularProducts[index],
+                ),
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }
