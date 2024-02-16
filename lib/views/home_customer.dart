@@ -2,6 +2,7 @@ import 'package:delivery/components/SearchWidget.dart';
 import 'package:delivery/components/drawer/custom_drawer_customer.dart';
 import 'package:delivery/components/items/category_item.dart';
 import 'package:delivery/components/items/data.dart';
+import 'package:delivery/components/items/feature_item.dart';
 import 'package:delivery/components/items/popular_item.dart';
 import 'package:delivery/controller/product_controller.dart';
 import 'package:delivery/model/product.dart';
@@ -99,7 +100,7 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 15, right: 15),
-           // child: _buildFeatured(),
+            child: _buildFeatured(),
           ),
           const SizedBox(
             height: 20,
@@ -169,6 +170,31 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                   product: popularProducts[index],
                 ),
               ),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  _buildFeatured() {
+    return FutureBuilder<List<Product>>(
+      future: ProductController()
+          .getProductsDetails(), // Call the function to get product details
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // If the data is still loading, display a loading indicator
+          return const CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          // If there is an error while fetching data, display an error message
+          return Text('Error: ${snapshot.error}');
+        } else {
+          // If the data is successfully loaded, pass it to FeaturedItem widget
+          List<Product> products = snapshot.data!;
+          return Column(
+            children: List.generate(
+              products.length,
+              (index) => FeaturedItem(product: products[index]),
             ),
           );
         }
