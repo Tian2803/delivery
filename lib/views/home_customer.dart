@@ -1,4 +1,5 @@
 import 'package:delivery/components/SearchWidget.dart';
+import 'package:delivery/components/animation/ScaleRoute.dart';
 import 'package:delivery/components/drawer/custom_drawer_customer.dart';
 import 'package:delivery/components/items/category_item.dart';
 import 'package:delivery/components/items/data.dart';
@@ -7,6 +8,7 @@ import 'package:delivery/components/items/popular_item.dart';
 import 'package:delivery/controller/product_controller.dart';
 import 'package:delivery/model/product.dart';
 import 'package:delivery/styles/app_colors.dart';
+import 'package:delivery/views/notification.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -39,7 +41,7 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                 color: Color(0xFF3a3737),
               ),
               onPressed: () {
-                // Navigator.push(context, ScaleRoute(page: const HomeScreenCustomer()));
+                Navigator.push(context, ScaleRoute(page: const NotificationPage()));
               })
         ],
       ),
