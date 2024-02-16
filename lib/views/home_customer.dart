@@ -5,6 +5,7 @@ import 'package:delivery/components/items/category_item.dart';
 import 'package:delivery/components/items/data.dart';
 import 'package:delivery/components/items/feature_item.dart';
 import 'package:delivery/components/items/popular_item.dart';
+import 'package:delivery/components/nav_bar_customer.dart';
 import 'package:delivery/controller/product_controller.dart';
 import 'package:delivery/model/product.dart';
 import 'package:delivery/styles/app_colors.dart';
@@ -47,6 +48,7 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
       ),
       drawer: const CustomDrawerCustomer(),
       body: _buildBody(),
+      bottomNavigationBar: const NavBarCustomer(),
     );
   }
 

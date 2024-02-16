@@ -3,7 +3,7 @@
 import 'dart:async';
 
 import 'package:delivery/components/display_image_widget.dart';
-import 'package:delivery/components/nav_bar_owner.dart';
+import 'package:delivery/components/nav_bar_customer.dart';
 import 'package:delivery/components/profile/edit_address.dart';
 import 'package:delivery/components/profile/edit_email.dart';
 import 'package:delivery/components/profile/edit_image.dart';
@@ -13,14 +13,14 @@ import 'package:delivery/components/profile/edit_phone.dart';
 import 'package:delivery/controller/person_controller.dart';
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ProfilePageCustomer extends StatefulWidget {
+  const ProfilePageCustomer({super.key});
 
   @override
-  _ProfilePageState createState() => _ProfilePageState();
+  _ProfilePageCustomerState createState() => _ProfilePageCustomerState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfilePageCustomerState extends State<ProfilePageCustomer> {
   late Future<List<String>> userInfo;
 
   @override
@@ -54,59 +54,61 @@ class _ProfilePageState extends State<ProfilePage> {
           },
         ),*/
       ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          FutureBuilder<List<String>>(
-            future: userInfo,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                // Muestra un indicador de carga mientras se obtiene la información
-                return Container(
-                  alignment: Alignment.center,
-                  child: const CircularProgressIndicator(),
-                );
-              } else if (snapshot.hasError) {
-                // Muestra un mensaje de error si hay algún problema
-                print('Error: ${snapshot.error}');
-                return const Text("Unexpected error");
-              } else {
-                // Muestra la información del usuario si la operación fue exitosa
-                List<String> userInfoList = snapshot.data!;
-                return Column(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        navigateSecondPage(EditImagePage(
-                          image: userInfoList[5],
-                        ));
-                      },
-                      child: DisplayImage(
-                        imagePath: userInfoList[
-                            5], // Asegúrate de usar el índice correcto
-                        onPressed: () {},
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            FutureBuilder<List<String>>(
+              future: userInfo,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  // Muestra un indicador de carga mientras se obtiene la información
+                  return Container(
+                    alignment: Alignment.center,
+                    child: const CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  // Muestra un mensaje de error si hay algún problema
+                  print('Error: ${snapshot.error}');
+                  return const Text("Unexpected error");
+                } else {
+                  // Muestra la información del usuario si la operación fue exitosa
+                  List<String> userInfoList = snapshot.data!;
+                  return Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          navigateSecondPage(EditImagePage(
+                            image: userInfoList[5],
+                          ));
+                        },
+                        child: DisplayImage(
+                          imagePath: userInfoList[
+                              5], // Asegúrate de usar el índice correcto
+                          onPressed: () {},
+                        ),
                       ),
-                    ),
-                    buildUserInfoDisplay(
-                        userInfoList[0], 'Name', const EditNameFormPage()),
-                    buildUserInfoDisplay(userInfoList[1], 'Last Name',
-                        const EditLastNameFormPage()),
-                    buildUserInfoDisplay(
-                        userInfoList[2], 'Phone', const EditPhoneFormPage()),
-                    buildUserInfoDisplay(
-                        userInfoList[3], 'Email', const EditEmailFormPage()),
-                    buildUserInfoDisplay(userInfoList[4], 'Address',
-                        const EditAddressFormPage()),
-                  ],
-                );
-              }
-            },
-          ),
-        ],
+                      buildUserInfoDisplay(
+                          userInfoList[0], 'Name', const EditNameFormPage()),
+                      buildUserInfoDisplay(userInfoList[1], 'Last Name',
+                          const EditLastNameFormPage()),
+                      buildUserInfoDisplay(
+                          userInfoList[2], 'Phone', const EditPhoneFormPage()),
+                      buildUserInfoDisplay(
+                          userInfoList[3], 'Email', const EditEmailFormPage()),
+                      buildUserInfoDisplay(userInfoList[4], 'Address',
+                          const EditAddressFormPage()),
+                    ],
+                  );
+                }
+              },
+            ),
+          ],
+        ),
       ),
-      bottomNavigationBar: const NavBarOwner(),
+      bottomNavigationBar: const NavBarCustomer(),
     );
   }
 

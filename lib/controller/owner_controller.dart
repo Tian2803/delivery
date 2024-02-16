@@ -150,6 +150,22 @@ class OwnerController {
     return null;
   }
 
+  Future<bool> esOwner() async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+      final userDoc =
+          await FirebaseFirestore.instance.collection('owners').doc(uid).get();
+
+      if (userDoc.exists) {
+        return true;
+      }
+    } catch (e) {
+      print('No existe el usuario en la colecccion.');
+      print(e);
+    }
+    return false;
+  }
+
   Future<List<Owner>> getOwnerDetails() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 

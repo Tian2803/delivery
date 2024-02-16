@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable, avoid_unnecessary_containers, library_private_types_in_public_api, file_names
 
+import 'package:delivery/components/nav_bar_customer.dart';
 import 'package:delivery/styles/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -107,7 +108,7 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
           ),
         ),
       ),
-      //bottomNavigationBar: const BottomNavBarWidget(),
+      bottomNavigationBar: const NavBarCustomer(),
     );
   }
 }

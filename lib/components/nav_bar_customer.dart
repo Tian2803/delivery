@@ -2,32 +2,33 @@
 
 import 'package:delivery/components/items/bottombar_item.dart';
 import 'package:delivery/styles/app_colors.dart';
-import 'package:delivery/views/food_register.dart';
-import 'package:delivery/views/home_owner.dart';
+import 'package:delivery/views/food_order.dart';
+import 'package:delivery/views/home_customer.dart';
 import 'package:delivery/views/profile_page_customer.dart';
-import 'package:delivery/views/profile_page_owner.dart';
 import 'package:flutter/material.dart';
 
-class NavBarOwner extends StatefulWidget {
-  const NavBarOwner({super.key});
+class NavBarCustomer extends StatefulWidget {
+  const NavBarCustomer({super.key});
 
   @override
-  _NavBarOwnerState createState() => _NavBarOwnerState();
+  _NavBarCustomerState createState() => _NavBarCustomerState();
 }
 
-class _NavBarOwnerState extends State<NavBarOwner> {
+class _NavBarCustomerState extends State<NavBarCustomer> {
   int _activeTab = 0;
 
   final List<IconData> _tapIcons = [
     Icons.home_rounded,
-    Icons.add_box_outlined,
+    Icons.explore_rounded,
+    Icons.shopping_cart_rounded,
     Icons.person_rounded
   ];
 
   final List<Widget> _pages = [
-    const HomeScreenOwner(),
-    const FoodRegister(),
-    const ProfilePageOwner(),
+    const HomeScreenCustomer(),
+    const HomeScreenCustomer(),
+    const FoodOrderPage(),
+    const ProfilePageCustomer(),
   ];
 
   @override

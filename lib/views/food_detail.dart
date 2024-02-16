@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, sort_child_properties_last, must_be_immutable, sized_box_for_whitespace, prefer_interpolation_to_compose_strings, prefer_adjacent_string_concatenation, library_private_types_in_public_api, prefer_typing_uninitialized_variables
 
 import 'package:delivery/components/animation/ScaleRoute.dart';
+import 'package:delivery/components/nav_bar_customer.dart';
 import 'package:delivery/model/product.dart';
 import 'package:delivery/views/food_order.dart';
 import 'package:delivery/views/home_customer.dart';
@@ -132,7 +133,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
             ),
           ),
         ),
-        //bottomNavigationBar: const BottomNavBarWidget(),
+      bottomNavigationBar: const NavBarCustomer(),
       ),
     );
   }
