@@ -2,6 +2,7 @@
 
 import 'package:delivery/components/animation/ScaleRoute.dart';
 import 'package:delivery/model/product.dart';
+import 'package:delivery/views/food_order.dart';
 import 'package:delivery/views/home_customer.dart';
 import 'package:flutter/material.dart';
 
@@ -41,8 +42,8 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                 ),
                 onPressed: () {
                   
-                  /*Navigator.push(
-                      context, ScaleRoute(page: const FoodOrderPage()));*/
+                  Navigator.push(
+                      context, ScaleRoute(page: const FoodOrderPage()));
                 })
           ],
         ),
@@ -317,7 +318,7 @@ class AddToCartMenu extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-              //Navigator.push(context, ScaleRoute(page: const FoodOrderPage()));
+              Navigator.push(context, ScaleRoute(page: const FoodOrderPage()));
             },
             child: Container(
               width: 200.0,
