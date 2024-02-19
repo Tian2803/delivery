@@ -83,7 +83,7 @@ class AuthController {
       } else {
         showPersonalizedAlert(context, 'Error al iniciar sesión: ${e.message}',
             AlertMessageType.error);
-            print(e.message);
+        print(e.message);
       }
     }
   }
@@ -100,7 +100,7 @@ class AuthController {
     }
   }
 
-  /*Future<void> retrieveSession(BuildContext context) async {
+  Future<void> retrieveSession(BuildContext context) async {
     try {
       User? user = FirebaseAuth.instance.currentUser;
 
@@ -133,5 +133,5 @@ class AuthController {
     } catch (e) {
       print('Error retrieving session: $e');
     }
-  }*/
+  }
 }
