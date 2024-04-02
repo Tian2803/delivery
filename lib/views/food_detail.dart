@@ -132,7 +132,6 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                       ),
                       InkWell(
                         onTap: () {
-                          
                           Navigator.push(
                               context, ScaleRoute(page: const FoodOrderPage()));
                         },

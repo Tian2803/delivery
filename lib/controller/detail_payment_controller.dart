@@ -65,6 +65,7 @@ class DetailPaymentController {
     }
   }
 
+  //Historial
   Future<List<DetailPayment>> getDetailPaymentUser(String id) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -78,7 +79,7 @@ class DetailPaymentController {
         QuerySnapshot snapshot = await firestore
             .collection('detailPayment')
             .where('customerId', isEqualTo: id)
-            .where('state', isNotEqualTo: 'Procesing')
+            .where('state', isNotEqualTo: 'delivered')
             .get();
 
         // Recorre los documentos y crea instancias de la clase DetallePago
@@ -102,7 +103,7 @@ class DetailPaymentController {
         QuerySnapshot snapshot = await firestore
             .collection('detailPayment')
             .where('ownerId', isEqualTo: id)
-            .where('state', isNotEqualTo: 'Procesing')
+            .where('state', isNotEqualTo: 'delivered')
             .get();
 
         // Recorre los documentos y crea instancias de la clase DetallePago

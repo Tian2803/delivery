@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable, avoid_unnecessary_containers, library_private_types_in_public_api, file_names
+// ignore_for_file: must_be_immutable, avoid_unnecessary_containers, library_private_types_in_public_api, file_names, unused_element
 
 import 'package:delivery/components/nav_bar_customer.dart';
 import 'package:delivery/styles/app_colors.dart';
@@ -13,9 +13,17 @@ class FoodOrderPage extends StatefulWidget {
 
 class _FoodOrderPageState extends State<FoodOrderPage> {
   int counter = 0;
-  List<CartItemModel> cartItems = [
-    CartItemModel("Grilled Salmon", 96, 2, "ic_popular_food_1"),
-    CartItemModel("Meat vegetable", 65.08, 5, "ic_popular_food_4"),
+  List<CartItem> cartItems = [
+    CartItem(
+        productName: "Grilled Salmon",
+        productPrice: 96,
+        initialProductQuantity: 2,
+        productImage: "ic_popular_food_1"),
+    CartItem(
+        productName: "Meat vegetable",
+        productPrice: 65.08,
+        initialProductQuantity: 5,
+        productImage: "ic_popular_food_4"),
     // Agrega otros elementos según sea necesario
   ];
 
@@ -45,7 +53,41 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
           ),
         ),
         actions: <Widget>[
-          CartIconWithBadge(),
+          Stack(
+            children: <Widget>[
+              IconButton(
+                  icon: const Icon(
+                    Icons.business_center,
+                    color: Color(0xFF3a3737),
+                  ),
+                  onPressed: () {}),
+              counter != 0
+                  ? Positioned(
+                      right: 11,
+                      top: 11,
+                      child: Container(
+                        padding: const EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        constraints: const BoxConstraints(
+                          minWidth: 14,
+                          minHeight: 14,
+                        ),
+                        child: Text(
+                          '$counter',
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 8,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    )
+                  : Container()
+            ],
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -69,15 +111,18 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                 height: 10,
               ),
               CartItem(
-                  cartItem: CartItemModel(
-                      "Grilled Salmon", 96, 2, "ic_popular_food_1")),
+                  productName: "Grilled Salmon",
+                  productPrice: 96,
+                  initialProductQuantity: 2,
+                  productImage: "ic_popular_food_1"),
               const SizedBox(
                 height: 10,
               ),
               CartItem(
-                cartItem: CartItemModel(
-                    "Meat vegetable", 65.08, 5, "ic_popular_food_4"),
-              ),
+                  productName: "Meat vegetable",
+                  productPrice: 65.08,
+                  initialProductQuantity: 5,
+                  productImage: "ic_popular_food_4"),
               const SizedBox(
                 height: 10,
               ),
@@ -85,7 +130,85 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
               const SizedBox(
                 height: 10,
               ),
-              TotalCalculationWidget(cartItems: cartItems),
+              Container(
+                alignment: Alignment.center,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFFfae3e2).withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: const Offset(0, 1),
+                    ),
+                  ],
+                ),
+                child: Card(
+                  color: Colors.white,
+                  elevation: 0,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5.0),
+                    ),
+                  ),
+                  child: Container(
+                    padding: const EdgeInsets.all(15),
+                    child: Column(
+                      children: <Widget>[
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        for (var item in cartItems)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                item.productName,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Color(0xFF3a3a3b),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Text(
+                                "\$${item.productPrice}",
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Color(0xFF3a3a3b),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            const Text(
+                              "Total",
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Color(0xFF3a3a3b),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              "\$${_calculateTotal()}",
+                              style: const TextStyle(
+                                fontSize: 18,
+                                color: Color(0xFF3a3a3b),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(
                 height: 10,
               ),
@@ -111,8 +234,28 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
       bottomNavigationBar: const NavBarCustomer(),
     );
   }
+
+  void _updateCart() {
+    int sum = 0;
+    for (var item in cartItems) {
+      sum += item.initialProductQuantity;
+    }
+
+    setState(() {
+      counter = sum;
+    });
+  }
+
+  double _calculateTotal() {
+    double total = 0.0;
+    for (var item in cartItems) {
+      total += item.productPrice * item.initialProductQuantity;
+    }
+    return total;
+  }
 }
 
+//Se queda
 class PaymentMethodWidget extends StatelessWidget {
   const PaymentMethodWidget({super.key});
 
@@ -168,118 +311,7 @@ class PaymentMethodWidget extends StatelessWidget {
   }
 }
 
-class TotalCalculationWidget extends StatefulWidget {
-  final List<CartItemModel> cartItems;
-
-  const TotalCalculationWidget({
-    Key? key,
-    required this.cartItems,
-  }) : super(key: key);
-
-  @override
-  _TotalCalculationWidgetState createState() => _TotalCalculationWidgetState();
-}
-
-class _TotalCalculationWidgetState extends State<TotalCalculationWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xFFfae3e2).withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 1,
-            offset: const Offset(0, 1),
-          ),
-        ],
-      ),
-      child: Card(
-        color: Colors.white,
-        elevation: 0,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(5.0),
-          ),
-        ),
-        child: Container(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            children: <Widget>[
-              const SizedBox(
-                height: 15,
-              ),
-              for (var item in widget.cartItems)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      item.productName,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        color: Color(0xFF3a3a3b),
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Text(
-                      "\$${item.productPrice}",
-                      style: const TextStyle(
-                        fontSize: 18,
-                        color: Color(0xFF3a3a3b),
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                ),
-              const SizedBox(
-                height: 15,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  const Text(
-                    "Total",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color(0xFF3a3a3b),
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    "\$${calculateTotal()}",
-                    style: const TextStyle(
-                      fontSize: 18,
-                      color: Color(0xFF3a3a3b),
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  double calculateTotal() {
-    return widget.cartItems.fold(0,
-        (sum, item) => sum + item.productPrice * item.initialProductQuantity);
-  }
-}
-
-class CartItemModel {
-  final String productName;
-  final double productPrice;
-  final int initialProductQuantity;
-  final String productImage;
-
-  CartItemModel(this.productName, this.productPrice,
-      this.initialProductQuantity, this.productImage);
-}
-
+//Se queda
 class PromoCodeWidget extends StatelessWidget {
   const PromoCodeWidget({super.key});
 
@@ -323,11 +355,17 @@ class PromoCodeWidget extends StatelessWidget {
 }
 
 class CartItem extends StatefulWidget {
-  final CartItemModel cartItem;
+  final String productName;
+  final double productPrice;
+  int initialProductQuantity;
+  final String productImage;
 
-  const CartItem({
+  CartItem({
     super.key,
-    required this.cartItem,
+    required this.productName,
+    required this.productPrice,
+    required this.initialProductQuantity,
+    required this.productImage,
   });
 
   @override
@@ -340,7 +378,7 @@ class _CartItemState extends State<CartItem> {
   @override
   void initState() {
     super.initState();
-    productQuantity = widget.cartItem.initialProductQuantity;
+    productQuantity = widget.initialProductQuantity;
   }
 
   @override
@@ -376,7 +414,7 @@ class _CartItemState extends State<CartItem> {
                   alignment: Alignment.centerLeft,
                   child: Center(
                     child: Image.asset(
-                      "assets/images/popular_foods/${widget.cartItem.productImage}.png",
+                      "assets/images/popular_foods/${widget.productImage}.png",
                       width: 110,
                       height: 100,
                     ),
@@ -398,7 +436,7 @@ class _CartItemState extends State<CartItem> {
                         children: <Widget>[
                           Container(
                             child: Text(
-                              widget.cartItem.productName,
+                              widget.productName,
                               style: const TextStyle(
                                   fontSize: 18,
                                   color: Color(0xFF3a3a3b),
@@ -411,7 +449,7 @@ class _CartItemState extends State<CartItem> {
                           ),
                           Container(
                             child: Text(
-                              "\$${widget.cartItem.productPrice}",
+                              "\$${widget.productPrice}",
                               style: const TextStyle(
                                   fontSize: 18,
                                   color: Color(0xFF3a3a3b),
@@ -442,21 +480,7 @@ class _CartItemState extends State<CartItem> {
                   Container(
                     margin: const EdgeInsets.only(left: 20),
                     alignment: Alignment.centerRight,
-                    child: AddToCartMenu(
-                      productQuantity,
-                      onIncrease: () {
-                        setState(() {
-                          productQuantity++;
-                        });
-                      },
-                      onDecrease: () {
-                        if (productQuantity > 1) {
-                          setState(() {
-                            productQuantity--;
-                          });
-                        }
-                      },
-                    ),
+                    child: buildAddToCartMenu(),
                   )
                 ],
               )
@@ -466,69 +490,21 @@ class _CartItemState extends State<CartItem> {
       ),
     );
   }
-}
 
-class CartIconWithBadge extends StatelessWidget {
-  int counter = 1;
-
-  CartIconWithBadge({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        IconButton(
-            icon: const Icon(
-              Icons.business_center,
-              color: Color(0xFF3a3737),
-            ),
-            onPressed: () {}),
-        counter != 0
-            ? Positioned(
-                right: 11,
-                top: 11,
-                child: Container(
-                  padding: const EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  constraints: const BoxConstraints(
-                    minWidth: 14,
-                    minHeight: 14,
-                  ),
-                  child: Text(
-                    '$counter',
-                    style: const TextStyle(
-                      color: Colors.red,
-                      fontSize: 8,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              )
-            : Container()
-      ],
-    );
-  }
-}
-
-class AddToCartMenu extends StatelessWidget {
-  int productCounter;
-  final Function() onIncrease;
-  final Function() onDecrease;
-
-  AddToCartMenu(this.productCounter,
-      {super.key, required this.onIncrease, required this.onDecrease});
-
-  @override
-  Widget build(BuildContext context) {
+  Widget buildAddToCartMenu() {
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           IconButton(
-            onPressed: onDecrease,
+            onPressed: () {
+              if (productQuantity > 1) {
+                setState(() {
+                  productQuantity--;
+                });
+              }
+              widget.initialProductQuantity = productQuantity;
+            },
             icon: const Icon(Icons.remove),
             color: Colors.black,
             iconSize: 18,
@@ -543,7 +519,7 @@ class AddToCartMenu extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                '$productCounter',
+                '$productQuantity',
                 style: const TextStyle(
                     fontSize: 16.0,
                     color: Colors.white,
@@ -552,7 +528,13 @@ class AddToCartMenu extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: onIncrease,
+            onPressed: () {
+              setState(() {
+                productQuantity++;
+              });
+              widget.initialProductQuantity = productQuantity;
+              print(widget.initialProductQuantity);
+            },
             icon: const Icon(Icons.add),
             color: AppColors.darker,
             iconSize: 18,

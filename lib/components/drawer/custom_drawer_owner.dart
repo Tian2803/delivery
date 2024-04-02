@@ -93,7 +93,7 @@ class _CustomDrawerOwnerState extends State<CustomDrawerOwner> {
                 icon: Icons.history_sharp,
                 title: 'Historial',
                 infoCount: 0,
-                doHaveMoreOptions: Icons.arrow_forward_ios,
+                //doHaveMoreOptions: Icons.arrow_forward_ios,
                 onTap: () {
                   Navigator.push(
                       context,

@@ -1,6 +1,9 @@
 import 'package:delivery/components/drawer/bottom_user_info.dart';
 import 'package:delivery/components/drawer/header.dart';
 import 'package:delivery/components/items/custom_list_tile.dart';
+import 'package:delivery/views/historial.dart';
+import 'package:delivery/views/home_customer.dart';
+import 'package:delivery/views/order_view.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawerCustomer extends StatefulWidget {
@@ -44,18 +47,21 @@ class _CustomDrawerCustomerState extends State<CustomDrawerCustomer> {
                 title: 'Home',
                 infoCount: 0,
                 onTap: () {
-                  /*Navigator.push(
+                  Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const HomeScreenCustomer()));
-                */},
+                },
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
-                icon: Icons.calendar_today,
-                title: 'Calender',
+                icon: Icons.shopping_cart_rounded,
+                title: 'Orders',
                 infoCount: 0,
-                onTap: () {},
+                onTap: () {Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => OrderView()));},
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
@@ -82,11 +88,16 @@ class _CustomDrawerCustomerState extends State<CustomDrawerCustomer> {
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
-                icon: Icons.airplane_ticket,
-                title: 'Flights',
+                icon: Icons.history_sharp,
+                title: 'Historial',
                 infoCount: 0,
-                doHaveMoreOptions: Icons.arrow_forward_ios,
-                onTap: () {},
+                //doHaveMoreOptions: Icons.arrow_forward_ios,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HistorialView()));
+                },
               ),
               const Divider(color: Colors.grey),
               const Spacer(),
