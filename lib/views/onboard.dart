@@ -3,7 +3,6 @@ import 'package:delivery/controller/auth_controller.dart';
 import 'package:delivery/model/allinonboardscreen.dart';
 import 'package:delivery/styles/app_colors.dart';
 import 'package:delivery/styles/text_styles.dart';
-import 'package:delivery/views/sign_in.dart';
 import 'package:flutter/material.dart';
 
 class OnboardScreen extends StatefulWidget {

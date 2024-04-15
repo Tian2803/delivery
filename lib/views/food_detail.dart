@@ -2,10 +2,13 @@
 
 import 'package:delivery/components/animation/ScaleRoute.dart';
 import 'package:delivery/components/nav_bar_customer.dart';
+import 'package:delivery/controller/shopping_controller.dart';
+import 'package:delivery/model/cart.dart';
 import 'package:delivery/model/product.dart';
 import 'package:delivery/views/food_order.dart';
 import 'package:delivery/views/home_customer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FoodDetailsPage extends StatefulWidget {
   const FoodDetailsPage({super.key, required this.product});
@@ -19,6 +22,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final shoppingCartProvider = Provider.of<ShoppingController>(context);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -132,6 +136,20 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                       ),
                       InkWell(
                         onTap: () {
+                          bool productExists = shoppingCartProvider
+                              .listProductsPurchased
+                              .any((product) =>
+                                  product.productId ==
+                                  widget.product.productId);
+                          if (!productExists) {
+                            shoppingCartProvider.listProductsPurchased.add(Cart(
+                              product: widget.product.productName,
+                              productId: widget.product.productId,
+                              quantity: selectedQuantity,
+                              price: widget.product.productPrice,
+                              image: widget.product.productImage,
+                            ));
+                          }
                           Navigator.push(
                               context, ScaleRoute(page: const FoodOrderPage()));
                         },

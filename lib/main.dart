@@ -1,24 +1,34 @@
+import 'dart:async';
+
 import 'package:delivery/controller/shopping_controller.dart';
 import 'package:delivery/firebase_options.dart';
 import 'package:delivery/views/onboard.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  Get.put(ShoppingController());
-  runApp(const MyApp());
+  // Envuelve la inicialización y la ejecución de la aplicación en la misma zona
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    runApp(
+      ChangeNotifierProvider<ShoppingController>(
+        create: (context) => ShoppingController(),
+        child: const MyApp(),
+      ),
+    );
+  }, (error, stackTrace) {
+    print('Error caught by zone: $error');
+    print(stackTrace);
+  });
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -28,7 +38,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const OnboardScreen()
+      home: const OnboardScreen(),
     );
   }
 }

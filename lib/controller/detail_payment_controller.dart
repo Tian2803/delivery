@@ -85,12 +85,9 @@ class DetailPaymentController {
         // Recorre los documentos y crea instancias de la clase DetallePago
         for (QueryDocumentSnapshot doc in snapshot.docs) {
           // Obtener el nombre del producto
-          String productName =
-              await ProductController().getProductName(doc['productId']);
-
           detailPayment.add(DetailPayment(
               detailPaymentId: doc['detailPaymentId'],
-              productId: productName,
+              productId: doc['productId'],
               ownerId: doc['ownerId'],
               customerId: doc['customerId'],
               quantity: doc['quantity'],
@@ -109,12 +106,10 @@ class DetailPaymentController {
         // Recorre los documentos y crea instancias de la clase DetallePago
         for (QueryDocumentSnapshot doc in snapshot.docs) {
           // Obtener el nombre del producto
-          String productName =
-              await ProductController().getProductName(doc['productId']);
 
           detailPayment.add(DetailPayment(
               detailPaymentId: doc['detailPaymentId'],
-              productId: productName,
+              productId: doc['productId'],
               ownerId: doc['ownerId'],
               customerId: doc['customerId'],
               quantity: doc['quantity'],

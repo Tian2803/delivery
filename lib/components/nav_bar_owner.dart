@@ -4,7 +4,6 @@ import 'package:delivery/components/items/bottombar_item.dart';
 import 'package:delivery/styles/app_colors.dart';
 import 'package:delivery/views/food_register.dart';
 import 'package:delivery/views/home_owner.dart';
-import 'package:delivery/views/profile_page_customer.dart';
 import 'package:delivery/views/profile_page_owner.dart';
 import 'package:flutter/material.dart';
 

@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class AppColors {
+  static const Color kPrimaryColor = Color.fromRGBO(15, 237, 219, 1);
+  static const Color kBackgroundColor = Color.fromRGBO(242, 242, 242, 1);
+  static const Color kDangerColor = Color.fromRGBO(249, 77, 30, 1);
+  static const Color kTextTitleColor = Color.fromRGBO(86, 160, 160, 1);
+
   static const lightsky = Color(0xFFA6C0FF);
   static const whiteshade = Color(0xFFF8F9FA);
   static const blue = Color(0xFF497fff);

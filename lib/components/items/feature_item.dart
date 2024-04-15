@@ -2,10 +2,13 @@
 
 import 'package:delivery/components/animation/ScaleRoute.dart';
 import 'package:delivery/components/items/custom_image.dart';
+import 'package:delivery/controller/shopping_controller.dart';
+import 'package:delivery/model/cart.dart';
 import 'package:delivery/model/product.dart';
 import 'package:delivery/styles/app_colors.dart';
 import 'package:delivery/views/food_detail.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'favorite_box.dart';
 
@@ -16,8 +19,9 @@ class FeaturedItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
-        Navigator.pushReplacement(context, ScaleRoute(page: FoodDetailsPage(product: product)));
+      onTap: () {
+        Navigator.pushReplacement(
+            context, ScaleRoute(page: FoodDetailsPage(product: product)));
       },
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
@@ -47,14 +51,15 @@ class FeaturedItem extends StatelessWidget {
             Expanded(
               child: _buildItemInfo(),
             ),
-            _buildItemPrice(),
+            _buildItemPrice(context),
           ],
         ),
       ),
     );
   }
 
-  _buildItemPrice() {
+  _buildItemPrice(BuildContext context) {
+    final shoppingCartProvider = Provider.of<ShoppingController>(context);
     return Column(
       children: <Widget>[
         Text(
@@ -66,13 +71,23 @@ class FeaturedItem extends StatelessWidget {
               fontWeight: FontWeight.w500,
               color: AppColors.primary),
         ),
+        IconButton(
+            onPressed: () {
+              bool productExists = shoppingCartProvider.listProductsPurchased
+                  .any((pro) => pro.productId == product.productId);
+              if (!productExists) {
+                shoppingCartProvider.listProductsPurchased.add(Cart(
+                    product: product.productName,
+                    productId: product.productId,
+                    quantity: 1,
+                    price: product.productPrice,
+                    image: product.productImage));
+              }
+            },
+            icon: const Icon(Icons.add_shopping_cart_outlined)),
         const SizedBox(
-          height: 10,
+          width: 2,
         ),
-        const FavoriteBox(
-          iconSize: 13,
-          isFavorited: false,
-        )
       ],
     );
   }
@@ -99,22 +114,17 @@ class FeaturedItem extends StatelessWidget {
         const SizedBox(
           height: 4,
         ),
-        /*Row(
+        const Row(
           children: [
-            const Icon(
-              Icons.star_rounded,
-              size: 14,
-              color: AppColors.primary,
+            SizedBox(
+              height: 10,
             ),
-            const SizedBox(
-              width: 2,
-            ),
-            Text(
-              data["rate"] + " (" + data["rate_number"] + ")",
-              style: const TextStyle(fontSize: 12, color: AppColors.primary),
-            ),
+            FavoriteBox(
+              iconSize: 13,
+              isFavorited: false,
+            )
           ],
-        )*/
+        )
       ],
     );
   }
