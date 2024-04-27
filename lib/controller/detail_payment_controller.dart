@@ -4,14 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/controller/alert_dialog.dart';
 import 'package:delivery/controller/aux_controller.dart';
 import 'package:delivery/controller/owner_controller.dart';
-import 'package:delivery/controller/product_controller.dart';
 import 'package:delivery/model/detail_payment.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class DetailPaymentController {
-  void detailRegister(BuildContext context, String productId, String ownerId,
-      String quantity, String pay, String state) async {
+  void detailRegister(BuildContext context, List<Map<String, dynamic>> products, String pay, String state) async {
     try {
       String detailPaymentId = AuxController().generateId();
 
@@ -19,10 +17,8 @@ class DetailPaymentController {
 
       DetailPayment detailPayment = DetailPayment(
           detailPaymentId: detailPaymentId,
-          productId: productId,
-          ownerId: ownerId,
+          products: products,
           customerId: customerId,
-          quantity: quantity,
           pay: pay,
           date: AuxController().getFechaActual(),
           state: state);
@@ -33,6 +29,7 @@ class DetailPaymentController {
           .set(detailPayment.toJson());
 
       print('Pago exitoso');
+      products.clear();
     } catch (e) {
       showPersonalizedAlert(
           context, 'Error al registrar el pago', AlertMessageType.error);
@@ -50,10 +47,8 @@ class DetailPaymentController {
       // Devuelve una instancia de la clase DetallePago
       return DetailPayment(
           detailPaymentId: snapshot['detailPaymentId'],
-          productId: snapshot['productId'],
-          ownerId: snapshot['ownerId'],
+          products: snapshot['products'],
           customerId: snapshot['customerId'],
-          quantity: snapshot['quantity'],
           pay: snapshot['pay'],
           date: snapshot['date'],
           state: snapshot['state']);
@@ -87,10 +82,8 @@ class DetailPaymentController {
           // Obtener el nombre del producto
           detailPayment.add(DetailPayment(
               detailPaymentId: doc['detailPaymentId'],
-              productId: doc['productId'],
-              ownerId: doc['ownerId'],
+              products: doc['products'],
               customerId: doc['customerId'],
-              quantity: doc['quantity'],
               pay: doc['pay'],
               date: doc['date'],
               state: doc['state']));
@@ -109,10 +102,8 @@ class DetailPaymentController {
 
           detailPayment.add(DetailPayment(
               detailPaymentId: doc['detailPaymentId'],
-              productId: doc['productId'],
-              ownerId: doc['ownerId'],
+              products: doc['products'],
               customerId: doc['customerId'],
-              quantity: doc['quantity'],
               pay: doc['pay'],
               date: doc['date'],
               state: doc['state']));
@@ -148,16 +139,10 @@ class DetailPaymentController {
 
         // Recorre los documentos y crea instancias de la clase DetallePago
         for (QueryDocumentSnapshot doc in snapshot.docs) {
-          // Obtener el nombre del producto
-          String productName =
-              await ProductController().getProductName(doc['productId']);
-
           detailPayment.add(DetailPayment(
               detailPaymentId: doc['detailPaymentId'],
-              productId: productName,
-              ownerId: doc['ownerId'],
+              products: doc['products'],
               customerId: doc['customerId'],
-              quantity: doc['quantity'],
               pay: doc['pay'],
               date: doc['date'],
               state: doc['state']));
@@ -172,16 +157,10 @@ class DetailPaymentController {
 
         // Recorre los documentos y crea instancias de la clase DetallePago
         for (QueryDocumentSnapshot doc in snapshot.docs) {
-          // Obtener el nombre del producto
-          String productName =
-              await ProductController().getProductName(doc['productId']);
-
           detailPayment.add(DetailPayment(
               detailPaymentId: doc['detailPaymentId'],
-              productId: productName,
-              ownerId: doc['ownerId'],
+              products: doc['products'],
               customerId: doc['customerId'],
-              quantity: doc['quantity'],
               pay: doc['pay'],
               date: doc['date'],
               state: doc['state']));

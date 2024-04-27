@@ -7,6 +7,7 @@ import 'package:delivery/views/home_owner.dart';
 import 'package:delivery/views/sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController {
   Future<void> signInUser(
@@ -19,6 +20,12 @@ class AuthController {
           AlertMessageType.error,
         );
       } else {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        await prefs.setString('user', email);
+        await prefs.setString('password', password);
+
+        print(prefs.getString('user'));
         final FirebaseAuth auth = FirebaseAuth.instance;
 
         UserCredential userCredential = await auth.signInWithEmailAndPassword(

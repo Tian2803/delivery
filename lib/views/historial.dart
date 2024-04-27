@@ -79,7 +79,7 @@ class HistorialView extends StatelessWidget {
                                         MainAxisAlignment.spaceAround,
                                     children: [
                                       Text(
-                                        "Producto: ${detail[i].productId}",
+                                        "Producto: ${detail[i].customerId}",
                                         style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
@@ -88,7 +88,7 @@ class HistorialView extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        "Cantidad: ${detail[i].quantity}",
+                                        "Cantidad: ${detail[i].customerId}",
                                         style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,

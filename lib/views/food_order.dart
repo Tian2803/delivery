@@ -4,6 +4,7 @@ import 'package:delivery/components/animation/ScaleRoute.dart';
 import 'package:delivery/components/items/custom_button.dart';
 import 'package:delivery/components/items/custom_image.dart';
 import 'package:delivery/components/nav_bar_customer.dart';
+import 'package:delivery/controller/detail_payment_controller.dart';
 import 'package:delivery/controller/shopping_controller.dart';
 import 'package:delivery/styles/app_colors.dart';
 import 'package:delivery/views/home_customer.dart';
@@ -407,7 +408,9 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
               ),
               const PaymentMethodWidget(),
               const SizedBox(height: 10,),
-              AuthButton(onTap: () {}, text: "Finalizar Compra")
+              AuthButton(onTap: () {
+                DetailPaymentController().detailRegister(context, shoppingCartProvider.products, total.toString(), "Procesing");
+              }, text: "Finalizar Compra")
             ],
           ),
         ),

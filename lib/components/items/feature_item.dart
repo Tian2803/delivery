@@ -81,7 +81,8 @@ class FeaturedItem extends StatelessWidget {
                     productId: product.productId,
                     quantity: 1,
                     price: product.productPrice,
-                    image: product.productImage));
+                    image: product.productImage,
+                    ownerId: product.userId));
               }
             },
             icon: const Icon(Icons.add_shopping_cart_outlined)),

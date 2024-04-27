@@ -79,7 +79,7 @@ class OrderView extends StatelessWidget {
                                         MainAxisAlignment.spaceAround,
                                     children: [
                                       Text(
-                                        "Producto: ${detail[i].productId}",
+                                        "Producto: ${detail[i].date}",
                                         style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
@@ -88,7 +88,7 @@ class OrderView extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        "Cantidad: ${detail[i].quantity}",
+                                        "Cantidad: ${detail[i].date}",
                                         style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,

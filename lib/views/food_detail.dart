@@ -148,6 +148,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                               quantity: selectedQuantity,
                               price: widget.product.productPrice,
                               image: widget.product.productImage,
+                              ownerId: widget.product.userId
                             ));
                           }
                           Navigator.push(
