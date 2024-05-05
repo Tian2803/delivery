@@ -41,8 +41,7 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
             color: Color(0xFF3a3737),
           ),
           onPressed: () {
-            Navigator.push(
-                context, ScaleRoute(page: const HomeScreenCustomer()));
+            Navigator.pop(context);
           },
         ),
         title: const Center(
@@ -407,10 +406,20 @@ class _FoodOrderPageState extends State<FoodOrderPage> {
                 height: 10,
               ),
               const PaymentMethodWidget(),
-              const SizedBox(height: 10,),
-              AuthButton(onTap: () {
-                DetailPaymentController().detailRegister(context, shoppingCartProvider.products, total.toString(), "Procesing");
-              }, text: "Finalizar Compra")
+              const SizedBox(
+                height: 10,
+              ),
+              AuthButton(
+                  onTap: () async {
+                    bool status = await DetailPaymentController()
+                        .detailRegister(context, shoppingCartProvider.products,
+                            total.toString(), "Procesing");
+                    if (status == true) {
+                      shoppingCartProvider.clearProducts();
+                      setState(() {});
+                    }
+                  },
+                  text: "Finalizar Compra")
             ],
           ),
         ),

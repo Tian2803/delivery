@@ -9,8 +9,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class DetailPaymentController {
-  void detailRegister(BuildContext context, List<Map<String, dynamic>> products, String pay, String state) async {
+  Future<bool> detailRegister(BuildContext context,
+      List<Map<String, dynamic>> products, String pay, String state) async {
     try {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return const AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 10),
+                Text("Procesando orden..."),
+              ],
+            ),
+          );
+        },
+      );
       String detailPaymentId = AuxController().generateId();
 
       final customerId = FirebaseAuth.instance.currentUser!.uid;
@@ -27,12 +43,16 @@ class DetailPaymentController {
           .collection('detailPayment')
           .doc(detailPaymentId)
           .set(detailPayment.toJson());
-
+      Navigator.of(context).pop();
+      return true;
       print('Pago exitoso');
-      products.clear();
+      showPersonalizedAlert(
+          context, "Compra exitosa", AlertMessageType.success);
     } catch (e) {
+      Navigator.of(context).pop();
       showPersonalizedAlert(
           context, 'Error al registrar el pago', AlertMessageType.error);
+      return false;
     }
   }
 
@@ -60,67 +80,149 @@ class DetailPaymentController {
     }
   }
 
-  //Historial
-  Future<List<DetailPayment>> getDetailPaymentUser(String id) async {
+  //Mostrar el Historial delivered
+  Future<List<DetailPayment>> getDetailPaymentDelivered(String id) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     try {
       String? ownerId = await OwnerController().getOwnerId();
-      // Inicializa una lista para almacenar los detalles de pago
-      List<DetailPayment> detailPayment = [];
+      // Initialize a list to store the detail payments
+      List<DetailPayment> detailPayments = [];
 
       if (id != ownerId) {
-        // Realiza la consulta a Firebase Firestore
-        QuerySnapshot snapshot = await firestore
+        // Query Firestore
+        QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
             .collection('detailPayment')
             .where('customerId', isEqualTo: id)
-            .where('state', isNotEqualTo: 'delivered')
-            .get();
+            .where('state', whereIn: ['Delivered', 'Cancelled']).get();
 
-        // Recorre los documentos y crea instancias de la clase DetallePago
+        // Iterate through documents and create DetailPayment instances
         for (QueryDocumentSnapshot doc in snapshot.docs) {
-          // Obtener el nombre del producto
-          detailPayment.add(DetailPayment(
-              detailPaymentId: doc['detailPaymentId'],
-              products: doc['products'],
-              customerId: doc['customerId'],
-              pay: doc['pay'],
-              date: doc['date'],
-              state: doc['state']));
+          // Extract product data from the document
+          List<Map<String, dynamic>> productsData =
+              List<Map<String, dynamic>>.from(doc['products']);
+
+          // Create a DetailPayment instance and add it to the list
+          detailPayments.add(DetailPayment(
+            detailPaymentId: doc['detailPaymentId'],
+            products: productsData,
+            customerId: doc['customerId'],
+            pay: doc['pay'],
+            date: doc['date'],
+            state: doc['state'],
+          ));
         }
       } else {
-        // Realiza la consulta a Firebase Firestore
-        QuerySnapshot snapshot = await firestore
+        // Query Firestore
+        QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
             .collection('detailPayment')
-            .where('ownerId', isEqualTo: id)
-            .where('state', isNotEqualTo: 'delivered')
-            .get();
+            .where('state', whereIn: ['Delivered', 'Cancelled']).get();
 
-        // Recorre los documentos y crea instancias de la clase DetallePago
         for (QueryDocumentSnapshot doc in snapshot.docs) {
-          // Obtener el nombre del producto
+          // Extract product data from the document
+          List<Map<String, dynamic>> productsData =
+              List<Map<String, dynamic>>.from(doc['products']);
 
-          detailPayment.add(DetailPayment(
-              detailPaymentId: doc['detailPaymentId'],
-              products: doc['products'],
-              customerId: doc['customerId'],
-              pay: doc['pay'],
-              date: doc['date'],
-              state: doc['state']));
+          // Iterate through product data to find matches with the given ID
+          for (var productData in productsData) {
+            if (productData['ownerId'] == id) {
+              // Create a DetailPayment instance and add it to the list
+              detailPayments.add(DetailPayment(
+                detailPaymentId: doc['detailPaymentId'],
+                products: productsData,
+                customerId: doc['customerId'],
+                pay: doc['pay'],
+                date: doc['date'],
+                state: doc['state'],
+              ));
+              // Exit the loop once a match is found
+              break;
+            }
+          }
         }
       }
-
-      // Devuelve la lista de detalles de pago
-      return detailPayment;
+      // Return the list of detail payments
+      return detailPayments;
     } catch (e) {
-      // Maneja errores de forma adecuada
-      print(
-          'Error, no se logró obtener la información de los detalles de pago: $e');
-      throw Exception(
-          'No se pudo obtener la información de los detalles de pago.');
+      // Handle errors properly
+      print('Error, could not fetch detail payment information: $e');
+      throw Exception('Could not retrieve detail payment information.');
     }
   }
 
+  //Mostrar las ordenes activas
+  Future<List<DetailPayment>> getDetailPaymentProcesing(String id) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    try {
+      String? ownerId = await OwnerController().getOwnerId();
+      // Initialize a list to store the detail payments
+      List<DetailPayment> detailPayments = [];
+
+      if (id != ownerId) {
+        // Query Firestore
+        QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
+            .collection('detailPayment')
+            .where('customerId', isEqualTo: id)
+            .where('state', isEqualTo: 'Procesing')
+            .get();
+
+        // Iterate through documents and create DetailPayment instances
+        for (QueryDocumentSnapshot doc in snapshot.docs) {
+          // Extract product data from the document
+          List<Map<String, dynamic>> productsData =
+              List<Map<String, dynamic>>.from(doc['products']);
+
+          // Create a DetailPayment instance and add it to the list
+          detailPayments.add(DetailPayment(
+            detailPaymentId: doc['detailPaymentId'],
+            products: productsData,
+            customerId: doc['customerId'],
+            pay: doc['pay'],
+            date: doc['date'],
+            state: doc['state'],
+          ));
+        }
+      } else {
+        // Query Firestore
+        QuerySnapshot<Map<String, dynamic>> snapshot = await firestore
+            .collection('detailPayment')
+            .where('state', isEqualTo: 'Procesing')
+            .get();
+
+        for (QueryDocumentSnapshot doc in snapshot.docs) {
+          // Extract product data from the document
+          List<Map<String, dynamic>> productsData =
+              List<Map<String, dynamic>>.from(doc['products']);
+
+          // Iterate through product data to find matches with the given ID
+          for (var productData in productsData) {
+            if (productData['ownerId'] == id) {
+              // Create a DetailPayment instance and add it to the list
+              detailPayments.add(DetailPayment(
+                detailPaymentId: doc['detailPaymentId'],
+                products: productsData,
+                customerId: doc['customerId'],
+                pay: doc['pay'],
+                date: doc['date'],
+                state: doc['state'],
+              ));
+              // Exit the loop once a match is found
+              break;
+            }
+          }
+        }
+      }
+      // Return the list of detail payments
+      return detailPayments;
+    } catch (e) {
+      // Handle errors properly
+      print('Error, could not fetch detail payment information: $e');
+      throw Exception('Could not retrieve detail payment information.');
+    }
+  }
+
+  //No sirve
   Future<List<DetailPayment>> getDetailPaymentState(String id) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -176,5 +278,33 @@ class DetailPaymentController {
       throw Exception(
           'No se pudo obtener la información de los detalles de pago.');
     }
+  }
+
+  Future<void> updateStatus(
+      String status, String uidPayment, BuildContext context) async {
+    print(uidPayment);
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 10),
+              Text("Actualizando estado..."),
+            ],
+          ),
+        );
+      },
+    );
+    DocumentReference productRef =
+        FirebaseFirestore.instance.collection('detailPayment').doc(uidPayment);
+    await productRef.update({
+      'state': status,
+    });
+    Navigator.of(context).pop();
+    showPersonalizedAlert(
+        context, "Estado actualizado exitosamente", AlertMessageType.success);
   }
 }

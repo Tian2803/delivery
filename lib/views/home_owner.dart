@@ -1,13 +1,13 @@
 // ignore_for_file: library_private_types_in_public_api, deprecated_member_use, avoid_print
 
 import 'package:delivery/components/SearchWidget.dart';
-import 'package:delivery/components/animation/ScaleRoute.dart';
 import 'package:delivery/components/drawer/custom_drawer_owner.dart';
 import 'package:delivery/components/items/custom_image.dart';
 import 'package:delivery/components/nav_bar_owner.dart';
 import 'package:delivery/controller/product_controller.dart';
 import 'package:delivery/model/product.dart';
 import 'package:delivery/styles/app_colors.dart';
+import 'package:delivery/views/notification.dart';
 import 'package:delivery/views/product_show.dart';
 import 'package:delivery/views/product_update.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -78,9 +78,9 @@ class _HomeScreenOwnerState extends State<HomeScreenOwner> {
           ),
           onPressed: () {
             Navigator.push(
-              context,
-              ScaleRoute(page: const HomeScreenOwner()),
-            );
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NotificationPage()));
           },
         )
       ],

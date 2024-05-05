@@ -24,6 +24,7 @@ class ShoppingController extends ChangeNotifier {
 
   void clearProducts() {
     _listProductsPurchased.clear();
+    print(_listProductsPurchased.length);
   }
 
   List<Cart> get listProductsPurchased {

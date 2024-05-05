@@ -37,7 +37,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
             ),
             onPressed: () {
               Navigator.push(
-                  context, ScaleRoute(page: const HomeScreenCustomer()));
+                  context, MaterialPageRoute(builder: (context) => const HomeScreenCustomer()));
             },
           ),
           actions: <Widget>[
@@ -152,7 +152,7 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                             ));
                           }
                           Navigator.push(
-                              context, ScaleRoute(page: const FoodOrderPage()));
+                              context, MaterialPageRoute(builder: (context) => const FoodOrderPage()));
                         },
                         child: Container(
                           width: 200.0,

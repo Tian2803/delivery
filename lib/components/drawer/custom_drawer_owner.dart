@@ -3,6 +3,7 @@ import 'package:delivery/components/drawer/header.dart';
 import 'package:delivery/components/items/custom_list_tile.dart';
 import 'package:delivery/views/historial.dart';
 import 'package:delivery/views/home_owner.dart';
+import 'package:delivery/views/notification.dart';
 import 'package:delivery/views/order_view.dart';
 import 'package:flutter/material.dart';
 
@@ -107,8 +108,11 @@ class _CustomDrawerOwnerState extends State<CustomDrawerOwner> {
                 isCollapsed: _isCollapsed,
                 icon: Icons.notifications,
                 title: 'Notifications',
-                infoCount: 2,
-                onTap: () {},
+                infoCount: 0,
+                onTap: () {Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NotificationPage()));},
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
