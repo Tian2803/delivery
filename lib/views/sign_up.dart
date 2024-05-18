@@ -9,9 +9,7 @@ import 'package:delivery/components/items/custom_richtext.dart';
 import 'package:delivery/controller/alert_dialog.dart';
 import 'package:delivery/controller/aux_controller.dart';
 import 'package:delivery/controller/customer_controller.dart';
-//import 'package:delivery/controller/owner_controller.dart';
 import 'package:delivery/styles/app_colors.dart';
-import 'package:delivery/views/onboard.dart';
 import 'package:delivery/views/sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -62,7 +60,7 @@ class _SignUpState extends State<SignUp> {
             onTap: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const OnboardScreen()),
+                MaterialPageRoute(builder: (context) => const Signin()),
               );
             },
           ),

@@ -5,6 +5,7 @@ import 'package:delivery/components/items/custom_richtext.dart';
 import 'package:delivery/controller/auth_controller.dart';
 import 'package:delivery/controller/aux_controller.dart';
 import 'package:delivery/styles/app_colors.dart';
+import 'package:delivery/views/forget_password_screen.dart';
 import 'package:delivery/views/onboard.dart';
 import 'package:delivery/views/sign_up.dart';
 import 'package:flutter/material.dart';
@@ -115,7 +116,13 @@ class _SigninState extends State<Signin> {
                           margin: const EdgeInsets.symmetric(
                               vertical: 16, horizontal: 24),
                           child: InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ForgetScreen()));
+                            },
                             child: Text(
                               "Forgot Password?",
                               style: TextStyle(

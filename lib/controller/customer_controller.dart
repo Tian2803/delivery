@@ -1,11 +1,13 @@
-// ignore_for_file: use_build_context_synchronously, avoid_print
+// ignore_for_file: use_build_context_synchronously, avoid_print, deprecated_member_use
 
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/controller/alert_dialog.dart';
+import 'package:delivery/controller/auth_controller.dart';
 import 'package:delivery/controller/aux_controller.dart';
 import 'package:delivery/model/customer.dart';
+import 'package:delivery/views/verify_email_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
@@ -57,6 +59,21 @@ class CustomerController {
             AuxController.validatePasswords(password, passwordConf);
 
         if (isEmailValid && isPasswordValid) {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return const AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 10),
+                    Text("Registrando usuario..."),
+                  ],
+                ),
+              );
+            },
+          );
           UserCredential authResult =
               await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: email,
@@ -98,6 +115,22 @@ class CustomerController {
 
             showPersonalizedAlert(
                 context, "Registro exitoso", AlertMessageType.success);
+
+            User? user = FirebaseAuth.instance.currentUser;
+
+            // Cerrar el indicador de carga
+            Navigator.of(context).pop();
+
+            if (user != null && user.emailVerified == false) {
+              AuthController().sendEmailVerificationLink();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => VerifyEmail(user: user)),
+              );
+            }
+
+            //AuthController().signOut(context);
 
             /*Navigator.pushReplacement(
               context,
@@ -147,8 +180,10 @@ class CustomerController {
   Future<String?> getCustomerId() async {
     try {
       final uid = FirebaseAuth.instance.currentUser!.uid;
-      final userDoc =
-          await FirebaseFirestore.instance.collection('customers').doc(uid).get();
+      final userDoc = await FirebaseFirestore.instance
+          .collection('customers')
+          .doc(uid)
+          .get();
 
       if (userDoc.exists) {
         final customerId = userDoc.data()?['customerId'];
@@ -170,7 +205,8 @@ class CustomerController {
   }
 
   Future<void> updateEmail(String email, String uid) async {
-    await FirebaseAuth.instance.currentUser!.updateEmail(email);
+    //await FirebaseAuth.instance.currentUser?.verifyBeforeUpdateEmail(email);
+    await FirebaseAuth.instance.currentUser?.updateEmail(email);
 
     DocumentReference productRef =
         FirebaseFirestore.instance.collection('customers').doc(uid);
@@ -203,7 +239,8 @@ class CustomerController {
     });
   }
 
-  Future<void> updateImageProfile(XFile image, String uid, BuildContext context) async {
+  Future<void> updateImageProfile(
+      XFile image, String uid, BuildContext context) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -237,8 +274,8 @@ class CustomerController {
     await productRef.update({
       'customerProfile': downloadURL,
     });
-    
-      Navigator.of(context).pop();
-      Navigator.pop(context);
+
+    Navigator.of(context).pop();
+    Navigator.pop(context);
   }
 }

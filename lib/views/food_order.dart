@@ -1,13 +1,11 @@
 // ignore_for_file: must_be_immutable, avoid_unnecessary_containers, library_private_types_in_public_api, file_names, unused_element
 
-import 'package:delivery/components/animation/ScaleRoute.dart';
 import 'package:delivery/components/items/custom_button.dart';
 import 'package:delivery/components/items/custom_image.dart';
 import 'package:delivery/components/nav_bar_customer.dart';
 import 'package:delivery/controller/detail_payment_controller.dart';
 import 'package:delivery/controller/shopping_controller.dart';
 import 'package:delivery/styles/app_colors.dart';
-import 'package:delivery/views/home_customer.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

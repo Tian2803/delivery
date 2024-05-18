@@ -5,13 +5,10 @@ import 'package:flutter/material.dart';
 
 class HistorialFoodItem extends StatelessWidget {
   final DetailPayment food;
-  final bool active;
 
   const HistorialFoodItem({
     Key? key,
     required this.food,
-    this.active = false,
-
   }) : super(key: key);
 
   @override
@@ -117,7 +114,7 @@ class HistorialFoodItem extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => HistorialDetailItem(products: food.products, title: 'Purchase detail',detailPaymentId: food.detailPaymentId, active: active,),
+                    builder: (context) => HistorialDetailItem(products: food.products, title: 'Purchase detail',detailPaymentId: food.detailPaymentId),
                   ),
                 );
                 

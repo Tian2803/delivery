@@ -11,6 +11,7 @@ import 'package:delivery/components/profile/edit_last_name.dart';
 import 'package:delivery/components/profile/edit_name.dart';
 import 'package:delivery/components/profile/edit_phone.dart';
 import 'package:delivery/controller/person_controller.dart';
+import 'package:delivery/views/home_owner.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePageOwner extends StatefulWidget {
@@ -43,16 +44,16 @@ class _ProfilePageOwnerState extends State<ProfilePageOwner> {
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        /*leading: IconButton(
+        leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
             color: Color(0xFF3a3737),
           ),
           onPressed: () {
             Navigator.pushReplacement(
-                context, ScaleRoute(page: const HomeScreenOwner()));
+                context, MaterialPageRoute(builder: (context)=> const HomeScreenOwner()));
           },
-        ),*/
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(

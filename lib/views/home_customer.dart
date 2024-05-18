@@ -1,5 +1,6 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:delivery/components/SearchWidget.dart';
-import 'package:delivery/components/animation/ScaleRoute.dart';
 import 'package:delivery/components/drawer/custom_drawer_customer.dart';
 import 'package:delivery/components/items/category_item.dart';
 import 'package:delivery/components/items/data.dart';
@@ -42,7 +43,10 @@ class _HomeScreenCustomerState extends State<HomeScreenCustomer> {
                 color: Color(0xFF3a3737),
               ),
               onPressed: () {
-                Navigator.push(context, ScaleRoute(page: const NotificationPage()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const NotificationPage()));
               })
         ],
       ),

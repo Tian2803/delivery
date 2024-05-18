@@ -1,5 +1,8 @@
+// ignore_for_file: avoid_print
+
 import 'dart:async';
 
+import 'package:delivery/controller/notification_controller.dart';
 import 'package:delivery/controller/shopping_controller.dart';
 import 'package:delivery/firebase_options.dart';
 import 'package:delivery/views/onboard.dart';
@@ -14,6 +17,9 @@ Future<void> main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+
+    await initNotifications();
+    
     runApp(
       ChangeNotifierProvider<ShoppingController>(
         create: (context) => ShoppingController(),

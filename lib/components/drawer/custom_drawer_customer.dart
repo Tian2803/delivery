@@ -3,6 +3,7 @@ import 'package:delivery/components/drawer/header.dart';
 import 'package:delivery/components/items/custom_list_tile.dart';
 import 'package:delivery/views/historial.dart';
 import 'package:delivery/views/home_customer.dart';
+import 'package:delivery/views/notification.dart';
 import 'package:delivery/views/order_view.dart';
 import 'package:flutter/material.dart';
 
@@ -58,10 +59,10 @@ class _CustomDrawerCustomerState extends State<CustomDrawerCustomer> {
                 icon: Icons.shopping_cart_rounded,
                 title: 'Orders',
                 infoCount: 0,
-                onTap: () {Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => OrderView()));},
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => OrderView()));
+                },
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,
@@ -93,10 +94,8 @@ class _CustomDrawerCustomerState extends State<CustomDrawerCustomer> {
                 infoCount: 0,
                 //doHaveMoreOptions: Icons.arrow_forward_ios,
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => HistorialView()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => HistorialView()));
                 },
               ),
               const Divider(color: Colors.grey),
@@ -105,8 +104,13 @@ class _CustomDrawerCustomerState extends State<CustomDrawerCustomer> {
                 isCollapsed: _isCollapsed,
                 icon: Icons.notifications,
                 title: 'Notifications',
-                infoCount: 2,
-                onTap: () {},
+                infoCount: 0,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NotificationPage()));
+                },
               ),
               CustomListTile(
                 isCollapsed: _isCollapsed,

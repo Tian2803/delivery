@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class AppColors {
+  static const Color mainBlue = Color(0xFF247CFF);
+  static const Color gray = Color(0xFF757575);
+  static const Color gray93Color = Color(0xFFEDEDED);
+  static const Color gray76 = Color(0xFFC2C2C2);
+  static const Color darkBlue = Color(0xFF242424);
+  static const Color lightShadeOfGray = Color(0xFFFDFDFF);
+  static const Color mediumLightShadeOfGray = Color(0xFF9E9E9E);
+  static const Color coralRed = Color(0xFFFF4C5E);
+
   static const Color kBackgroundHistorial = Color(0xFFF5F5F5);
   static const Color kPrimaryColorHistorial = Color(0xFFFDB730);
   static const Color kPrimaryColor = Color.fromRGBO(15, 237, 219, 1);
@@ -45,6 +54,13 @@ class AppColors {
   static const orange = Color(0xFFFFC8A2);
   static const sky = Color(0xFFABDEE6);
   static const blue1 = Color(0xFF509BE4);
+
+  static const Color firebaseNavy = Color(0xFF2C384A);
+  static const Color firebaseOrange = Color(0xFFF57C00);
+  static const Color firebaseAmber = Color(0xFFFFA000);
+  static const Color firebaseYellow = Color(0xFFFFCA28);
+  static const Color firebaseGrey = Color(0xFFECEFF1);
+  static const Color googleBackground = Color(0xFF4285F4);
 
   static const listColors = [
     green,

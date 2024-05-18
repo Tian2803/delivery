@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:delivery/components/animation/ScaleRoute.dart';
 import 'package:delivery/components/display_image_widget.dart';
 import 'package:delivery/components/nav_bar_customer.dart';
 import 'package:delivery/components/profile/edit_address.dart';
@@ -11,6 +12,8 @@ import 'package:delivery/components/profile/edit_last_name.dart';
 import 'package:delivery/components/profile/edit_name.dart';
 import 'package:delivery/components/profile/edit_phone.dart';
 import 'package:delivery/controller/person_controller.dart';
+import 'package:delivery/views/home_customer.dart';
+import 'package:delivery/views/home_owner.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePageCustomer extends StatefulWidget {
@@ -43,16 +46,18 @@ class _ProfilePageCustomerState extends State<ProfilePageCustomer> {
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
-        /*leading: IconButton(
+        leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
             color: Color(0xFF3a3737),
           ),
           onPressed: () {
             Navigator.pushReplacement(
-                context, ScaleRoute(page: const HomeScreenOwner()));
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const HomeScreenCustomer()));
           },
-        ),*/
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
