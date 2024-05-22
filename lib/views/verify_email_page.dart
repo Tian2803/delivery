@@ -27,14 +27,17 @@ class VerifyEmailState extends State<VerifyEmail> {
   bool _canResendVerification = true;
   late Timer _resendTimer;
   Timer? _verificationCheckTimer;
+  int _start = 60;
 
   @override
   void initState() {
     super.initState();
     _user = widget._user;
     _isEmailVerified = _user.emailVerified;
-    _startResendTimer();
     _startVerificationCheckTimer();
+    if (!_isEmailVerified) {
+      _startResendTimer();
+    }
   }
 
   @override
@@ -63,10 +66,23 @@ class VerifyEmailState extends State<VerifyEmail> {
   }
 
   void _startResendTimer() {
-    _resendTimer = Timer(const Duration(minutes: 1), () {
-      setState(() {
-        _canResendVerification = true;
-      });
+    setState(() {
+      _canResendVerification = false;
+      _start = 60;
+    });
+
+    const oneSec = Duration(seconds: 1);
+    _resendTimer = Timer.periodic(oneSec, (timer) {
+      if (_start == 0) {
+        setState(() {
+          _canResendVerification = true;
+          timer.cancel();
+        });
+      } else {
+        setState(() {
+          _start--;
+        });
+      }
     });
   }
 
@@ -144,6 +160,8 @@ class VerifyEmailState extends State<VerifyEmail> {
               else
                 AuthButton(
                     onTap: () {
+                      _verificationCheckTimer?.cancel();
+                      _resendTimer.cancel();
                       AuthController().signOut(context);
                     },
                     text: "Sign Out"),
@@ -157,10 +175,16 @@ class VerifyEmailState extends State<VerifyEmail> {
 
   Widget _buildResendEmailVerification() {
     return _isVerifyingEmail || !_canResendVerification
-        ? const CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(
-              AppColors.firebaseGrey,
-            ),
+        ? Column(
+            children: [
+              Text(
+                "Try again in $_start seconds",
+                style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blueAccent),
+              ),
+            ],
           )
         : CustomRichText(
             discription: "Didn't receive the verification link? ",

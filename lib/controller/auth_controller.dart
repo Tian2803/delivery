@@ -143,6 +143,7 @@ class AuthController {
 
       if (user != null) {
         if (user.emailVerified == false) {
+          print("numero ${user.phoneNumber}");
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => VerifyEmail(user: user)),
