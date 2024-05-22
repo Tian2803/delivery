@@ -138,10 +138,12 @@ class CustomerController {
                   builder: (context) => const HomeScreenCustomer()),
             );*/
           } else {
+            Navigator.of(context).pop();
             showPersonalizedAlert(context, "Error al registrar al usuario}",
                 AlertMessageType.error);
           }
         } else {
+          Navigator.of(context).pop();
           showPersonalizedAlert(
               context, "Las contraseñas no coinciden", AlertMessageType.error);
         }
@@ -149,26 +151,31 @@ class CustomerController {
     } on FirebaseAuthException catch (e) {
       // Maneja errores específicos de FirebaseAuth
       if (e.code == 'email-already-in-use') {
+        Navigator.of(context).pop();
         showPersonalizedAlert(
             context,
             'Correo electrónico ya registrado,\ninicia sesión en lugar de registrarse.',
             AlertMessageType.error);
       } else if (e.code == 'invalid-email') {
+        Navigator.of(context).pop();
         showPersonalizedAlert(
             context,
             'El formato del correo electrónico\nno es válido.',
             AlertMessageType.error);
       } else if (e.code == 'operation-not-allowed') {
+        Navigator.of(context).pop();
         showPersonalizedAlert(
             context,
             'La operación de registro no está\npermitida.',
             AlertMessageType.error);
       } else if (e.code == 'weak-password') {
+        Navigator.of(context).pop();
         showPersonalizedAlert(
             context,
             'La contraseña es débil, debe tener\nal menos 15 caracteres.',
             AlertMessageType.error);
       } else {
+        Navigator.of(context).pop();
         // Muestra una alerta si ocurre otro tipo de error en la autenticación
         showPersonalizedAlert(
             context, 'Error al registrar al usuario', AlertMessageType.error);

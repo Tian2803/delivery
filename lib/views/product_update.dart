@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 //import 'package:image_picker/image_picker.dart';
 import 'package:raised_buttons/raised_buttons.dart';
 
+
 class ProductUpdate extends StatefulWidget {
   const ProductUpdate({super.key, required this.product});
   final Product product;

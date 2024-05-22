@@ -3,6 +3,7 @@ import 'package:delivery/controller/auth_controller.dart';
 import 'package:delivery/model/allinonboardscreen.dart';
 import 'package:delivery/styles/app_colors.dart';
 import 'package:delivery/styles/text_styles.dart';
+import 'package:delivery/views/otp_verification.dart';
 import 'package:flutter/material.dart';
 
 class OnboardScreen extends StatefulWidget {
@@ -125,11 +126,11 @@ class _OnboardScreenState extends State<OnboardScreen> {
                   left: MediaQuery.of(context).size.width * 0.33,
                   child: ElevatedButton(
                     onPressed: () {
-                      /*Navigator.pushReplacement(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const Signin()));*/
-                              AuthController().retrieveSession(context);
+                              builder: (context) => const OtpVerification()));
+                              //AuthController().retrieveSession(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.blue,

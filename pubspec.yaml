@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  animate_do: ^3.3.4
   awesome_dialog: ^3.2.1
   badges: ^3.1.2
   cached_network_image: ^3.3.1
@@ -48,6 +49,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_local_notifications: ^17.1.2
+  flutter_verification_code: ^1.1.7
   font_awesome_flutter: ^10.6.0
   get: ^4.6.6
   google_fonts: ^6.1.0
@@ -56,6 +58,7 @@ dependencies:
   intl: ^0.18.1
   path_provider: ^2.1.2
   provider: ^6.0.1
+  raised_buttons: ^0.0.2
   shared_preferences: ^2.2.3
   string_validator: ^1.0.2
   uuid: ^4.2.1
@@ -80,6 +83,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/email.png
+    - assets/otp.png
     - assets/images/menus/ic_search_menu.png
     - assets/images/menus/ic_account.png
     - assets/images/menus/ic_cart.png

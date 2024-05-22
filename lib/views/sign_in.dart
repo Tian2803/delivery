@@ -147,7 +147,7 @@ class _SigninState extends State<Signin> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const SignUp()));
-                      },
+                      }, 
                     ),
                   ],
                 ),

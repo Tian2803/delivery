@@ -8,7 +8,6 @@ import 'package:delivery/views/home_owner.dart';
 import 'package:delivery/views/sign_in.dart';
 import 'package:delivery/views/verify_email_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class AuthController {
@@ -76,52 +75,52 @@ class AuthController {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
+        Navigator.of(context).pop();
         showPersonalizedAlert(
           context,
           'Usuario no encontrado',
           AlertMessageType.warning,
         );
-        Navigator.of(context).pop();
       } else if (e.code == 'wrong-password') {
+        Navigator.of(context).pop();
         showPersonalizedAlert(
           context,
           'Contraseña incorrecta',
           AlertMessageType.warning,
         );
-        Navigator.of(context).pop();
       } else if (e.code == 'invalid-email') {
+        Navigator.of(context).pop();
         showPersonalizedAlert(
           context,
           'El formato del correo electrónico\nno es válido.',
           AlertMessageType.error,
         );
-        Navigator.of(context).pop();
       } else if (e.code == 'user-disabled') {
+        Navigator.of(context).pop();
         showPersonalizedAlert(
           context,
           'Su cuenta está deshabilitada.',
           AlertMessageType.error,
         );
-        Navigator.of(context).pop();
       } else if (e.code == 'network-request-failed') {
+        Navigator.of(context).pop();
         showPersonalizedAlert(
           context,
           'Problema de red durante la autenticación.',
           AlertMessageType.error,
         );
-        Navigator.of(context).pop();
       } else if (e.code == 'too-many-requests') {
+        Navigator.of(context).pop();
         showPersonalizedAlert(
           context,
           'Demasiadas solicitudes desde el\nmismo dispositivo o IP.',
           AlertMessageType.error,
         );
-        Navigator.of(context).pop();
       } else {
+        Navigator.of(context).pop();
         showPersonalizedAlert(context, 'Error al iniciar sesión: ${e.message}',
             AlertMessageType.error);
         print(e.message);
-        Navigator.of(context).pop();
       }
     }
   }
@@ -181,7 +180,7 @@ class AuthController {
     }
   }
 
-  String? email(){
+  String? email() {
     return FirebaseAuth.instance.currentUser!.email;
   }
 
