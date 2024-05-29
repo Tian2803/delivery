@@ -26,6 +26,7 @@ class _SignUpState extends State<SignUp> {
   final _lastNameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _streetAddressController = TextEditingController();
+  final _deliveryPreferenceController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _passwordConfController = TextEditingController();
@@ -35,6 +36,7 @@ class _SignUpState extends State<SignUp> {
   String get lastName => _lastNameController.text.trim();
   String get phone => _phoneController.text.trim();
   String get streetAddress => _streetAddressController.text.trim();
+  String get deliveryPreference => _deliveryPreferenceController.text.trim();
   String get email => _emailController.text.trim();
   String get password => _passwordController.text.trim();
   String get passwordConf => _passwordConfController.text.trim();
@@ -113,6 +115,19 @@ class _SignUpState extends State<SignUp> {
                       textInputAction: TextInputAction.done,
                       textInputType: TextInputType.text,
                       controller: _lastNameController,
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    CustomFormField(
+                      headingText: "Delivery preference",
+                      hintText: "Home, Store",
+                      obsecureText: false,
+                      suffixIcon: const SizedBox(),
+                      maxLines: 1,
+                      textInputAction: TextInputAction.done,
+                      textInputType: TextInputType.text,
+                      controller: _deliveryPreferenceController,
                     ),
                     const SizedBox(
                       height: 16,
@@ -282,10 +297,11 @@ class _SignUpState extends State<SignUp> {
                           phone,
                           email,
                           sampleImage,
+                          deliveryPreference,
                           password,
                           passwordConf,
                         );
-                        //OwnerController().registerOwner(name, lastName, phone, email, streetAddress,password, passwordConf, sampleImage, context);
+                        //OwnerController().registerOwner("Softsian",name, lastName, phone, email, streetAddress,password, passwordConf, sampleImage, context);
                       },
                       text: 'Sign Up',
                     ),

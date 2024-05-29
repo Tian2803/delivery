@@ -3,8 +3,10 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:delivery/controller/alert_dialog.dart';
+import 'package:delivery/controller/auth_controller.dart';
 import 'package:delivery/controller/aux_controller.dart';
 import 'package:delivery/model/owner.dart';
+import 'package:delivery/views/verify_email_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 
 class OwnerController {
   void registerOwner(
+      String company,
       String ownerName,
       String ownerLastName,
       String ownerPhone,
@@ -59,14 +62,8 @@ class OwnerController {
             String downloadURL = await reference.getDownloadURL();
             print("Imagen subida con éxito. URL: $downloadURL");
 
-            Owner owner = Owner(
-                ownerName: ownerName,
-                ownerLastName: ownerLastName,
-                ownerPhone: ownerPhone,
-                ownerStreetAddress: ownerStreetAddress,
-                ownerEmail: ownerEmail,
-                ownerProfile: downloadURL,
-                ownerId: uid);
+            Owner owner = Owner(ownerName, ownerLastName, ownerPhone,
+                ownerStreetAddress, ownerEmail, downloadURL, uid, company);
 
             await FirebaseFirestore.instance
                 .collection('owners')
@@ -78,6 +75,17 @@ class OwnerController {
               "Registro exitoso",
               AlertMessageType.success,
             );
+
+            User? user = FirebaseAuth.instance.currentUser;
+
+            if (user != null && user.emailVerified == false) {
+              AuthController().sendEmailVerificationLink();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => VerifyEmail(user: user)),
+              );
+            }
           } else {
             showPersonalizedAlert(
                 context,
@@ -123,8 +131,8 @@ class OwnerController {
       final owner =
           await FirebaseFirestore.instance.collection('owners').doc(uid).get();
       if (owner.exists) {
-        final name = owner.data()?['ownerName'];
-        final lastName = owner.data()?['ownerLastName'];
+        final name = owner.data()?['name'];
+        final lastName = owner.data()?['lastName'];
         return "$name $lastName";
       }
       return null;
@@ -140,7 +148,7 @@ class OwnerController {
           await FirebaseFirestore.instance.collection('owners').doc(uid).get();
 
       if (userDoc.exists) {
-        final ownerId = userDoc.data()?['ownerId'];
+        final ownerId = userDoc.data()?['id'];
         return ownerId as String;
       }
     } catch (e) {
@@ -177,14 +185,9 @@ class OwnerController {
       List<Owner> owner = [];
       // Recorre los documentos y crea instancias de la clase Owner
       for (var doc in snapshot.docs) {
-        owner.add(Owner(
-            ownerName: doc['ownerName'],
-            ownerLastName: doc['ownerLastName'],
-            ownerPhone: doc['ownerPhone'],
-            ownerStreetAddress: doc['ownerStreetAddress'],
-            ownerEmail: doc['ownerEmail'],
-            ownerProfile: doc['ownerProfile'],
-            ownerId: doc['ownerId']));
+        var data = doc.data() as Map<String, dynamic>;
+        owner.add(Owner.fromJson(
+            data)); // Asumiendo que Owner tiene un método fromJson adecuado
       }
       // Devuelve la lista de owners
       return owner;
@@ -203,8 +206,7 @@ class OwnerController {
           .doc(idOwner)
           .get();
 
-      final fullName =
-          doc.data()?['ownerName'] + " " + doc.data()?['ownerLastName'];
+      final fullName = doc.data()?['name'] + " " + doc.data()?['lastName'];
       print(fullName);
       return fullName as String;
     } catch (e) {
@@ -216,7 +218,7 @@ class OwnerController {
     DocumentReference productRef =
         FirebaseFirestore.instance.collection('owners').doc(uid);
     await productRef.update({
-      'ownerStreetAddress': address,
+      'streetAddress': address,
     });
   }
 
@@ -226,7 +228,7 @@ class OwnerController {
     DocumentReference productRef =
         FirebaseFirestore.instance.collection('owners').doc(uid);
     await productRef.update({
-      'ownerEmail': email,
+      'email': email,
     });
   }
 
@@ -234,7 +236,7 @@ class OwnerController {
     DocumentReference productRef =
         FirebaseFirestore.instance.collection('owners').doc(uid);
     await productRef.update({
-      'ownerLastName': lastName,
+      'lastName': lastName,
     });
   }
 
@@ -242,7 +244,7 @@ class OwnerController {
     DocumentReference productRef =
         FirebaseFirestore.instance.collection('owners').doc(uid);
     await productRef.update({
-      'ownerName': name,
+      'name': name,
     });
   }
 
@@ -250,7 +252,7 @@ class OwnerController {
     DocumentReference productRef =
         FirebaseFirestore.instance.collection('owners').doc(uid);
     await productRef.update({
-      'ownerPhone': phone,
+      'phone': phone,
     });
   }
 
@@ -287,7 +289,7 @@ class OwnerController {
     DocumentReference productRef =
         FirebaseFirestore.instance.collection('owners').doc(uid);
     await productRef.update({
-      'ownerProfile': downloadURL,
+      'profileImage': downloadURL,
     });
 
     Navigator.of(context).pop();

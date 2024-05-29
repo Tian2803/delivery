@@ -1,54 +1,58 @@
-class Customer {
-  final String customerName;
-  final String customerLastName;
-  final String customerPhone;
-  final String customerStreetAddress;
-  final String customerEmail;
-  final String customerProfile;
-  final String customerId;
+import 'package:delivery/model/people.dart';
 
+class Customer extends People {
+  final String
+      deliveryPreference; //omo recogida en tienda, entrega a domicilio, puntos de recogida
   Customer(
-      {required this.customerName,
-      required this.customerLastName,
-      required this.customerPhone,
-      required this.customerStreetAddress,
-      required this.customerEmail,
-      required this.customerProfile,
-      required this.customerId});
+    String name,
+    String lastName,
+    String phone,
+    String streetAddress,
+    String email,
+    String profileImage,
+    String id,
+    this.deliveryPreference,
+  ) : super(
+          name: name,
+          lastName: lastName,
+          phone: phone,
+          streetAddress: streetAddress,
+          email: email,
+          profileImage: profileImage,
+          id: id,
+        );
 
   Customer.defaultConstructor()
-      : customerName = 'none',
-        customerLastName = 'none',
-        customerPhone = 'none',
-        customerStreetAddress = 'none',
-        customerEmail = 'none',
-        customerProfile =
-            'https://t3.ftcdn.net/jpg/02/99/21/98/360_F_299219888_2E7GbJyosu0UwAzSGrpIxS0BrmnTCdo4.jpg',
-        customerId = 'none';
+      : deliveryPreference = 'Home Delivery',
+        super(
+          name: 'none',
+          lastName: 'none',
+          phone: 'none',
+          streetAddress: 'none',
+          email: 'none',
+          profileImage:
+              'https://t3.ftcdn.net/jpg/02/99/21/98/360_F_299219888_2E7GbJyosu0UwAzSGrpIxS0BrmnTCdo4.jpg',
+          id: 'none',
+        );
 
-  // Convert Product to JSON
+  @override
   Map<String, dynamic> toJson() {
-    return {
-      'customerName': customerName,
-      'customerLastName': customerLastName,
-      'customerPhone': customerPhone,
-      'customerStreetAddress': customerStreetAddress,
-      'customerEmail': customerEmail,
-      'customerProfile': customerProfile,
-      'customerId': customerId,
-    };
+    var map = super.toJson();
+    map['deliveryPreference'] = deliveryPreference;
+    return map;
   }
 
   // Create a Product instance from JSON
   factory Customer.fromJson(Map<String, dynamic> json) {
     return Customer(
-      customerName: json['customerName'],
-      customerLastName: json['customerLastName'],
-      customerPhone: json['customerPhone'],
-      customerStreetAddress: json['customerStreetAddress'],
-      customerEmail: json['customerEmail'],
-      customerProfile: json['customerProfile'],
-      customerId: json['customerId'],
+      json['name'],
+      json['lastName'],
+      json['phone'],
+      json['streetAddress'],
+      json['email'],
+      json['profileImage'],
+      json['id'],
+      json['deliveryPreference'],
     );
   }
 }

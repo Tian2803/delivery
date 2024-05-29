@@ -156,6 +156,7 @@ class AuthController {
 
           if (uid == ownerId) {
             // Si el UID del usuario es igual al ownerId, el usuario es un propietario
+            if (user == false) {}
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const HomeScreenOwner()),

@@ -13,18 +13,18 @@ class PersonController {
           .get();
 
       if (customerSnapshot.exists) {
-        info.add(customerSnapshot.data()?['customerName'] ?? '');
-        info.add(customerSnapshot.data()?['customerLastName'] ?? '');
-        info.add(customerSnapshot.data()?['customerProfile'] ?? '');
+        info.add(customerSnapshot.data()?['name'] ?? '');
+        info.add(customerSnapshot.data()?['lastName'] ?? '');
+        info.add(customerSnapshot.data()?['profileImage'] ?? '');
       } else {
         final ownerSnapshot = await FirebaseFirestore.instance
             .collection('owners')
             .doc(uid)
             .get();
         if (ownerSnapshot.exists) {
-          info.add(ownerSnapshot.data()?['ownerName'] ?? '');
-          info.add(ownerSnapshot.data()?['ownerLastName'] ?? '');
-          info.add(ownerSnapshot.data()?['ownerProfile'] ?? '');
+          info.add(ownerSnapshot.data()?['name'] ?? '');
+          info.add(ownerSnapshot.data()?['lastName'] ?? '');
+          info.add(ownerSnapshot.data()?['profileImage'] ?? '');
         }
       }
 
@@ -45,24 +45,24 @@ class PersonController {
           .get();
 
       if (customerSnapshot.exists) {
-        info.add(customerSnapshot.data()?['customerName'] ?? '');
-        info.add(customerSnapshot.data()?['customerLastName'] ?? '');
-        info.add(customerSnapshot.data()?['customerPhone'] ?? '');
-        info.add(customerSnapshot.data()?['customerEmail'] ?? '');
-        info.add(customerSnapshot.data()?['customerStreetAddress'] ?? '');
-        info.add(customerSnapshot.data()?['customerProfile'] ?? '');
+        info.add(customerSnapshot.data()?['name'] ?? '');
+        info.add(customerSnapshot.data()?['lastName'] ?? '');
+        info.add(customerSnapshot.data()?['phone'] ?? '');
+        info.add(customerSnapshot.data()?['email'] ?? '');
+        info.add(customerSnapshot.data()?['streetAddress'] ?? '');
+        info.add(customerSnapshot.data()?['profileImage'] ?? '');
       } else {
         final ownerSnapshot = await FirebaseFirestore.instance
             .collection('owners')
             .doc(uid)
             .get();
         if (ownerSnapshot.exists) {
-          info.add(ownerSnapshot.data()?['ownerName'] ?? '');
-          info.add(ownerSnapshot.data()?['ownerLastName'] ?? '');
-          info.add(ownerSnapshot.data()?['ownerPhone'] ?? '');
-          info.add(ownerSnapshot.data()?['ownerEmail'] ?? '');
-          info.add(ownerSnapshot.data()?['ownerStreetAddress'] ?? '');
-          info.add(ownerSnapshot.data()?['ownerProfile'] ?? '');
+          info.add(ownerSnapshot.data()?['name'] ?? '');
+          info.add(ownerSnapshot.data()?['lastName'] ?? '');
+          info.add(ownerSnapshot.data()?['phone'] ?? '');
+          info.add(ownerSnapshot.data()?['email'] ?? '');
+          info.add(ownerSnapshot.data()?['streetAddress'] ?? '');
+          info.add(ownerSnapshot.data()?['profileImage'] ?? '');
         }
       }
 

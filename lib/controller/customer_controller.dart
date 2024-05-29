@@ -23,13 +23,31 @@ class CustomerController {
           .get();
 
       if (customer.exists) {
-        final userName = customer.data()?['customerName'];
-        final lastName = customer.data()?['customerLastName'];
+        final userName = customer.data()?['name'];
+        final lastName = customer.data()?['lastName'];
         return userName + " " + lastName as String;
       }
       return "User name";
     } catch (e) {
       throw Exception('No se pudo obtener el nombre del usuario.');
+    }
+  }
+
+  Future<String?> getUserPhone() async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+      final customer = await FirebaseFirestore.instance
+          .collection('customers')
+          .doc(uid)
+          .get();
+
+      if (customer.exists) {
+        final userPhone = customer.data()?['phone'];
+        return userPhone as String;
+      }
+      return "User phone";
+    } catch (e) {
+      throw Exception('No se pudo obtener el telefono.');
     }
   }
 
@@ -41,6 +59,7 @@ class CustomerController {
       String phone,
       String email,
       XFile imageProfile,
+      String deliveryPreference,
       String password,
       String passwordConf) async {
     try {
@@ -50,6 +69,7 @@ class CustomerController {
           address.isEmpty ||
           email.isEmpty ||
           password.isEmpty ||
+          deliveryPreference.isEmpty ||
           passwordConf.isEmpty) {
         showPersonalizedAlert(context, 'Por favor, complete todos los campos',
             AlertMessageType.warning);
@@ -99,13 +119,14 @@ class CustomerController {
             print("\nImagen subida con éxito. URL: $downloadURL\n");
 
             Customer customer = Customer(
-              customerName: name,
-              customerLastName: lastName,
-              customerPhone: phone,
-              customerStreetAddress: address,
-              customerEmail: email,
-              customerProfile: downloadURL,
-              customerId: uid,
+              name,
+              lastName,
+              phone,
+              address,
+              email,
+              downloadURL,
+              uid,
+              deliveryPreference,
             );
 
             await FirebaseFirestore.instance
@@ -129,14 +150,6 @@ class CustomerController {
                     builder: (context) => VerifyEmail(user: user)),
               );
             }
-
-            //AuthController().signOut(context);
-
-            /*Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const HomeScreenCustomer()),
-            );*/
           } else {
             Navigator.of(context).pop();
             showPersonalizedAlert(context, "Error al registrar al usuario}",
@@ -193,7 +206,7 @@ class CustomerController {
           .get();
 
       if (userDoc.exists) {
-        final customerId = userDoc.data()?['customerId'];
+        final customerId = userDoc.data()?['id'];
         return customerId as String;
       }
     } catch (e) {
@@ -207,7 +220,7 @@ class CustomerController {
     DocumentReference productRef =
         FirebaseFirestore.instance.collection('customers').doc(uid);
     await productRef.update({
-      'customerStreetAddress': address,
+      'streetAddress': address,
     });
   }
 
@@ -218,7 +231,7 @@ class CustomerController {
     DocumentReference productRef =
         FirebaseFirestore.instance.collection('customers').doc(uid);
     await productRef.update({
-      'customerEmail': email,
+      'email': email,
     });
   }
 
@@ -226,7 +239,7 @@ class CustomerController {
     DocumentReference productRef =
         FirebaseFirestore.instance.collection('customers').doc(uid);
     await productRef.update({
-      'customerLastName': lastName,
+      'lastName': lastName,
     });
   }
 
@@ -234,7 +247,7 @@ class CustomerController {
     DocumentReference productRef =
         FirebaseFirestore.instance.collection('customers').doc(uid);
     await productRef.update({
-      'customerName': name,
+      'name': name,
     });
   }
 
@@ -242,7 +255,7 @@ class CustomerController {
     DocumentReference productRef =
         FirebaseFirestore.instance.collection('customers').doc(uid);
     await productRef.update({
-      'customerPhone': phone,
+      'phone': phone,
     });
   }
 
@@ -279,7 +292,7 @@ class CustomerController {
     DocumentReference productRef =
         FirebaseFirestore.instance.collection('customers').doc(uid);
     await productRef.update({
-      'customerProfile': downloadURL,
+      'profileImage': downloadURL,
     });
 
     Navigator.of(context).pop();

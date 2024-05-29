@@ -1,54 +1,49 @@
-class Owner {
-  final String ownerName;
-  final String ownerLastName;
-  final String ownerPhone;
-  final String ownerStreetAddress;
-  final String ownerEmail;
-  final String ownerProfile;
-  final String ownerId;
+import 'package:delivery/model/people.dart';
 
-  Owner(
-      {required this.ownerName,
-      required this.ownerLastName,
-      required this.ownerPhone,
-      required this.ownerStreetAddress,
-      required this.ownerEmail,
-      required this.ownerProfile,
-      required this.ownerId});
+class Owner extends People {
+  final String company;
+  Owner(String name, String lastName, String phone, String streetAddress,
+      String email, String profileImage, String id, this.company)
+      : super(
+            name: name,
+            lastName: lastName,
+            phone: phone,
+            streetAddress: streetAddress,
+            email: email,
+            profileImage: profileImage,
+            id: id);
 
   Owner.defaultConstructor()
-      : ownerName = 'none',
-        ownerLastName = 'none',
-        ownerPhone = 'none',
-        ownerStreetAddress = 'none',
-        ownerEmail = 'none',
-        ownerProfile =
-            'https://t3.ftcdn.net/jpg/02/99/21/98/360_F_299219888_2E7GbJyosu0UwAzSGrpIxS0BrmnTCdo4.jpg',
-        ownerId = 'none';
-
+      : company = 'none',
+        super(
+          name: 'none',
+          lastName: 'none',
+          phone: 'none',
+          streetAddress: 'none',
+          email: 'none',
+          profileImage:
+              'https://t3.ftcdn.net/jpg/02/99/21/98/360_F_299219888_2E7GbJyosu0UwAzSGrpIxS0BrmnTCdo4.jpg',
+          id: 'none',
+        );
   // Convert Product to JSON
+  @override
   Map<String, dynamic> toJson() {
-    return {
-      'ownerName': ownerName,
-      'ownerLastName': ownerLastName,
-      'ownerPhone': ownerPhone,
-      'ownerStreetAddress': ownerStreetAddress,
-      'ownerEmail': ownerEmail,
-      'ownerProfile': ownerProfile,
-      'ownerId': ownerId,
-    };
+    var map = super.toJson();
+    map['company'] = company;
+    return map;
   }
 
-  // Create a Product instance from JSON
+  // Convert JSON to Owner object
   factory Owner.fromJson(Map<String, dynamic> json) {
     return Owner(
-      ownerName: json['ownerName'],
-      ownerLastName: json['ownerLastName'],
-      ownerPhone: json['ownerPhone'],
-      ownerStreetAddress: json['ownerStreetAddress'],
-      ownerEmail: json['ownerEmail'],
-      ownerProfile: json['ownerProfile'],
-      ownerId: json['ownerId'],
+      json['name'],
+      json['lastName'],
+      json['phone'],
+      json['streetAddress'],
+      json['email'],
+      json['profileImage'],
+      json['id'],
+      json['company'],
     );
   }
 }

@@ -125,10 +125,11 @@ class _OnboardScreenState extends State<OnboardScreen> {
                   left: MediaQuery.of(context).size.width * 0.33,
                   child: ElevatedButton(
                     onPressed: () {
-                      /*Navigator.pushReplacement(
+                      /* Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const Signin()));*/
+                              builder: (context) => const OtpVerification()));
+                       */
                       AuthController().retrieveSession(context);
                     },
                     style: ElevatedButton.styleFrom(
