@@ -1,3 +1,4 @@
+import 'package:delivery/controller/notification_controller.dart';
 import 'package:flutter/material.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -8,6 +9,15 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
+  NotificationServices notificationServices = NotificationServices();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    notificationServices.requestNotificationPermission();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
